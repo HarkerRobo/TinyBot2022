@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 // import frc.robot.commands.intake.IntakeControl;
 import frc.robot.commands.drivetrain.SwerveManual;
-import frc.robot.commands.drivetrain.SwerveManualHeadingControl;
 import frc.robot.subsystems.Drivetrain;
 // import frc.robot.subsystems.Intake;
 import frc.robot.util.Limelight;
@@ -62,13 +61,13 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     Drivetrain drivetrain = Drivetrain.getInstance();
 
-    drivetrain.getOdometry().update(
-      Rotation2d.fromDegrees(drivetrain.getPigeon().getFusedHeading()), 
-      drivetrain.getTopLeft().getState(),
-      drivetrain.getTopRight().getState(), 
-      drivetrain.getBottomLeft().getState(), 
-      drivetrain.getBottomRight().getState()
-    );
+    // drivetrain.getOdometry().update(
+    //   Rotation2d.fromDegrees(drivetrain.getPigeon().getFusedHeading()), 
+    //   drivetrain.getTopLeft().getState(),
+    //   drivetrain.getTopRight().getState(), 
+    //   drivetrain.getBottomLeft().getState(), 
+    //   drivetrain.getBottomRight().getState()
+    // );
 
     
     
@@ -90,7 +89,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("angle pos bl", drivetrain.getBottomLeft().getRotationMotor().getSelectedSensorPosition());
     SmartDashboard.putNumber("angle pos br", drivetrain.getBottomRight().getRotationMotor().getSelectedSensorPosition());
 
-    SmartDashboard.putNumber("Pigeon Heading", drivetrain.getPigeon().getFusedHeading());
 
     // SmartDashboard.putString("cd color spinner current color", Spinner.getInstance().getCurrentColor().toString());
     // SmartDashboard.putBoolean("cd hood sol", Shooter.getInstance().getSolenoid().get() == Value.kReverse);

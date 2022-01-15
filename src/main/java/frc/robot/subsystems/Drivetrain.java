@@ -91,8 +91,6 @@ public class Drivetrain extends SubsystemBase {
 
 	public static final double FEET_PER_METER = 0.30488;
 
-    private HSPigeon pigeon;
-
     private SwerveDriveKinematics kinematics;
 
     private SwerveDriveOdometry odometry;
@@ -107,8 +105,6 @@ public class Drivetrain extends SubsystemBase {
         bottomRight = new SwerveModule(BOTTOM_RIGHT_ROTATION_SENSOR_PHASE, BOTTOM_RIGHT_TRANSLATION_SENSOR_PHASE,
                 RobotMap.ROTATION_IDS[3], RobotMap.TRANSLATION_IDS[3], BOTTOM_RIGHT_ROTATION_INVERTED, BOTTOM_RIGHT_TRANSLATION_INVERTED);
         
-        pigeon = new HSPigeon(RobotMap.PIGEON_ID);
-        pigeon.setFusedHeading(0);
 
         frontLeftLocation = new Translation2d(-DT_LENGTH / 2, DT_WIDTH / 2);
         frontRightLocation = new Translation2d(DT_LENGTH / 2, DT_WIDTH / 2);
@@ -116,7 +112,7 @@ public class Drivetrain extends SubsystemBase {
         backRightLocation = new Translation2d(DT_LENGTH / 2, -DT_WIDTH / 2);
         
         kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
-        odometry = new SwerveDriveOdometry(kinematics, Rotation2d.fromDegrees(pigeon.getFusedHeading()), new Pose2d(0,0, new Rotation2d()));
+        odometry = new SwerveDriveOdometry(kinematics, Rotation2d.fromDegrees(0), new Pose2d(0,0, new Rotation2d()));
     }
 
     public SwerveModule getTopLeft() {
@@ -133,10 +129,6 @@ public class Drivetrain extends SubsystemBase {
 
     public SwerveModule getBottomRight() {
         return bottomRight;
-    }
-
-    public HSPigeon getPigeon(){
-        return pigeon;
     }
 
     public void setPercentOutput(Vector translation){

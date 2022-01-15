@@ -22,7 +22,6 @@ public class RobotMap {
 
     // public static final int INTAKE = 0;
 
-    public static final int PIGEON_ID=0;
 
     public static final int INTAKE=10;
 

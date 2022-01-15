@@ -6,8 +6,6 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 
 // import frc.robot.commands.drivetrain.HSSwerveDriveController;
-import frc.robot.commands.drivetrain.SwerveManualHeadingControl;
-import frc.robot.commands.drivetrain.SwerveTranslationAlign;
 // import frc.robot.commands.intake.IntakeAutonControlForward;
 // import frc.robot.commands.intake.MoveBallsToShooter;
 // import frc.robot.commands.shooter.ShooterVelocityManual;
@@ -35,7 +33,7 @@ public class OI {
         initBindings();
     }
 
-    private void initBindings() {
+    private void initBindings() {}
         // operatorGamepad.getButtonA().whenPressed(new InstantCommand(() -> {
         //     Intake.getInstance().invertSolenoid();
         // }, Intake.getInstance()));
@@ -44,7 +42,6 @@ public class OI {
         //     new MoveBallsToShooter(), new ShooterManual()
         // ));
 
-        driverGamepad.getButtonY().whilePressed(new SwerveTranslationAlign());
         // driverGamepad.getRightDPadButton().whenPressed(new ParallelCommandGroup(
         //     Autons.autoPath1
         // ));
@@ -52,10 +49,7 @@ public class OI {
         // operatorGamepad.getButtonStart().whilePressed(new ShooterVelocityManual(78.5));
 
 
-        driverGamepad.getButtonSelect().whenPressed(new InstantCommand(() -> {Drivetrain.getInstance().getPigeon().addFusedHeading(-63.9886 * Drivetrain.getInstance().getPigeon().getFusedHeading()); 
-            SwerveManualHeadingControl.headingFlag = false;
-            SwerveManualHeadingControl.flag = false;}));
-    }
+    
     
     public HSGamepad getDriverGamepad(){
         return driverGamepad;

@@ -20,7 +20,6 @@ public class SwerveManual extends IndefiniteCommand {
     private static final double I_ZONE = 0;
     private static final double angleKP=1;
 
-    private static double pigeonAngle=Drivetrain.getInstance().getPigeon().getFusedHeading();
 
     private PIDController pid;
     public SwerveManual() {
@@ -77,9 +76,8 @@ public class SwerveManual extends IndefiniteCommand {
     //     angularVelocity=angleKP*(pigeonAngle - Drivetrain.getInstance().getPigeon().getFusedHeading());
     // }
 
-        pigeonAngle=Drivetrain.getInstance().getPigeon().getFusedHeading();
 
-        ChassisSpeeds chassis = ChassisSpeeds.fromFieldRelativeSpeeds(translationx, translationy, -angularVelocity, new Rotation2d(Math.toRadians(Drivetrain.getInstance().getPigeon().getFusedHeading())));
-        //Drivetrain.getInstance().setAngleAndDriveVelocity(Drivetrain.getInstance().getKinematics().toSwerveModuleStates(chassis));
+        ChassisSpeeds chassis = ChassisSpeeds.fromFieldRelativeSpeeds(translationx, translationy, -angularVelocity, new Rotation2d(Math.toRadians(0)));
+        Drivetrain.getInstance().setAngleAndDriveVelocity(Drivetrain.getInstance().getKinematics().toSwerveModuleStates(chassis));
     }
 }
