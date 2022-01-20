@@ -44,9 +44,6 @@ public class SwerveManual extends IndefiniteCommand {
         }
     
 
-        if(OI.getInstance().getDriverGamepad().getButtonBumperRightState()){
-            angularVelocity = -pid.calculate(Limelight.getTx(), TX_SETPOINT);
-        }
         // if(OI.getInstance().getDriverGamepad().getButtonBState() || OI.getInstance().getOperatorGamepad().getButtonBState()){
         //     Shooter.getInstance().setAutoHoodAngle();
         // }
@@ -60,6 +57,9 @@ public class SwerveManual extends IndefiniteCommand {
         if (OI.getInstance().getDriverGamepad().getButtonBumperLeftState()) {
             translationx *= 0.4;
             translationy *= 0.4;
+
+
+            
         }
 
         if(RobotMap.DEMO_MODE && !(OI.getInstance().getDriverGamepad().getButtonBumperLeftState() && OI.getInstance().getDriverGamepad().getButtonBumperRightState())){
@@ -77,7 +77,7 @@ public class SwerveManual extends IndefiniteCommand {
     // }
 
 
-        ChassisSpeeds chassis = ChassisSpeeds.fromFieldRelativeSpeeds(translationx, translationy, -angularVelocity, new Rotation2d(Math.toRadians(0)));
+        ChassisSpeeds chassis = ChassisSpeeds.fromFieldRelativeSpeeds(translationx, translationy, -angularVelocity, Rotation2d.fromDegrees(-Drivetrain.getInstance().getPigeon().getFusedHeading()));
         Drivetrain.getInstance().setAngleAndDriveVelocity(Drivetrain.getInstance().getKinematics().toSwerveModuleStates(chassis));
     }
 }

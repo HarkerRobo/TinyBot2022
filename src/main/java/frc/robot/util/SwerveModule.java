@@ -30,10 +30,10 @@ public class SwerveModule {
 
 	private static final double TRANSLATION_P = 0.1;
 	private static final double TRANSLATION_I = 0.0;
-	private static final double TRANSLATION_D = 5;
+	private static final double TRANSLATION_D = 0;
 	private static final double TRANSLATION_F = 0.04698;
 
-	private static final double ANGLE_P = 0.1;
+	private static final double ANGLE_P = .5;
 	private static final double ANGLE_I = 0;
 	private static final double ANGLE_D = 0;
 	private static final double ENCODER_TICKS = 4096.0;

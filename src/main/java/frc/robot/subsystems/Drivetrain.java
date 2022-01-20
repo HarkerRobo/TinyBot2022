@@ -27,31 +27,31 @@ public class Drivetrain extends SubsystemBase {
     private SwerveModule bottomLeft;
     private SwerveModule bottomRight;
 
-    private static final boolean TOP_LEFT_ROTATION_SENSOR_PHASE = false;//false;
+    private static final boolean TOP_LEFT_ROTATION_SENSOR_PHASE = true;
     private static final boolean TOP_LEFT_TRANSLATION_SENSOR_PHASE = false;
     private static final boolean TOP_LEFT_ROTATION_INVERTED = true;
     private static final boolean TOP_LEFT_TRANSLATION_INVERTED = false;
 
     private static final boolean TOP_RIGHT_ROTATION_SENSOR_PHASE = false;
     private static final boolean TOP_RIGHT_TRANSLATION_SENSOR_PHASE = RobotMap.IS_COMP ? false : true;
-    private static final boolean TOP_RIGHT_ROTATION_INVERTED = RobotMap.IS_COMP ? true : true;
+    private static final boolean TOP_RIGHT_ROTATION_INVERTED = true;
     private static final boolean TOP_RIGHT_TRANSLATION_INVERTED = false;
 
     private static final boolean BOTTOM_LEFT_ROTATION_SENSOR_PHASE = RobotMap.IS_COMP ? true : false;
-    private static final boolean BOTTOM_LEFT_TRANSLATION_SENSOR_PHASE = RobotMap.IS_COMP ? true : true;
-    private static final boolean BOTTOM_LEFT_ROTATION_INVERTED = false;
+    private static final boolean BOTTOM_LEFT_TRANSLATION_SENSOR_PHASE = false;
+    private static final boolean BOTTOM_LEFT_ROTATION_INVERTED = true;
     private static final boolean BOTTOM_LEFT_TRANSLATION_INVERTED = false;
 
     private static final boolean BOTTOM_RIGHT_ROTATION_SENSOR_PHASE = RobotMap.IS_COMP ? false : true;
     private static final boolean BOTTOM_RIGHT_TRANSLATION_SENSOR_PHASE = false;
-    private static final boolean BOTTOM_RIGHT_ROTATION_INVERTED =  RobotMap.IS_COMP ? false : true;; //false;
+    private static final boolean BOTTOM_RIGHT_ROTATION_INVERTED = false; 
     private static final boolean BOTTOM_RIGHT_TRANSLATION_INVERTED = false;
 
 
-    public static final int TL_OFFSET =  RobotMap.IS_COMP ? (2327-2048+40) : 915+15;
-    public static final int TR_OFFSET = RobotMap.IS_COMP ? (1538+2048): 2969-12;
-    public static final int BL_OFFSET = RobotMap.IS_COMP ? (408+2048-20): 905-20;
-    public static final int BR_OFFSET = RobotMap.IS_COMP ? (1465+2048): 3672-30;
+    public static final int TL_OFFSET = 1626;
+    public static final int TR_OFFSET = 2905;
+    public static final int BL_OFFSET = 920;
+    public static final int BR_OFFSET = 2940;
 
     private Translation2d frontLeftLocation;
     private Translation2d frontRightLocation;
@@ -95,6 +95,9 @@ public class Drivetrain extends SubsystemBase {
 
     private SwerveDriveOdometry odometry;
 
+
+    private HSPigeon pigeon;
+
     public Drivetrain() {
         topLeft = new SwerveModule(TOP_LEFT_ROTATION_SENSOR_PHASE, TOP_LEFT_TRANSLATION_SENSOR_PHASE,
                 RobotMap.ROTATION_IDS[0], RobotMap.TRANSLATION_IDS[0], TOP_LEFT_ROTATION_INVERTED, TOP_LEFT_TRANSLATION_INVERTED);
@@ -104,15 +107,17 @@ public class Drivetrain extends SubsystemBase {
                 RobotMap.ROTATION_IDS[2], RobotMap.TRANSLATION_IDS[2], BOTTOM_LEFT_ROTATION_INVERTED, BOTTOM_LEFT_TRANSLATION_INVERTED);
         bottomRight = new SwerveModule(BOTTOM_RIGHT_ROTATION_SENSOR_PHASE, BOTTOM_RIGHT_TRANSLATION_SENSOR_PHASE,
                 RobotMap.ROTATION_IDS[3], RobotMap.TRANSLATION_IDS[3], BOTTOM_RIGHT_ROTATION_INVERTED, BOTTOM_RIGHT_TRANSLATION_INVERTED);
-        
+     
 
+        pigeon=new HSPigeon(0);
+        pigeon.zero();
         frontLeftLocation = new Translation2d(-DT_LENGTH / 2, DT_WIDTH / 2);
         frontRightLocation = new Translation2d(DT_LENGTH / 2, DT_WIDTH / 2);
         backLeftLocation = new Translation2d(-DT_LENGTH / 2, -DT_WIDTH / 2);
         backRightLocation = new Translation2d(DT_LENGTH / 2, -DT_WIDTH / 2);
         
         kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
-        odometry = new SwerveDriveOdometry(kinematics, Rotation2d.fromDegrees(0), new Pose2d(0,0, new Rotation2d()));
+        odometry = new SwerveDriveOdometry(kinematics, Rotation2d.fromDegrees(pigeon.getFusedHeading()), new Pose2d(0,0, new Rotation2d()));
     }
 
     public SwerveModule getTopLeft() {
@@ -129,6 +134,10 @@ public class Drivetrain extends SubsystemBase {
 
     public SwerveModule getBottomRight() {
         return bottomRight;
+    }
+
+    public HSPigeon getPigeon(){
+        return pigeon;
     }
 
     public void setPercentOutput(Vector translation){

@@ -96,6 +96,7 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("cd pigeon angle", Drivetrain.getInstance().getPigeon().getFusedHeading());
     // SmartDashboard.putString("cd current auton", isTeleop ? Autons.curAuton.toString() : "Teleop Running");
     SmartDashboard.putString("cd current auton", "Teleop Running");
+    SmartDashboard.putNumber("gyro angle", Drivetrain.getInstance().getPigeon().getFusedHeading());
     // SmartDashboard.putBoolean("cd shooter isStalling", Shooter.getInstance().isStalling());
     // SmartDashboard.putBoolean("cd intake isStalling", Intake.getInstance().isStalling());
   }

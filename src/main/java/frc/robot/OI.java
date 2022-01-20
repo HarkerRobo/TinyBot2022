@@ -33,7 +33,12 @@ public class OI {
         initBindings();
     }
 
-    private void initBindings() {}
+    private void initBindings() {
+
+        driverGamepad.getButtonA().whenPressed(new InstantCommand(() -> {
+            Drivetrain.getInstance().getPigeon().zero();
+        }));
+    }
         // operatorGamepad.getButtonA().whenPressed(new InstantCommand(() -> {
         //     Intake.getInstance().invertSolenoid();
         // }, Intake.getInstance()));
@@ -49,7 +54,7 @@ public class OI {
         // operatorGamepad.getButtonStart().whilePressed(new ShooterVelocityManual(78.5));
 
 
-    
+        
     
     public HSGamepad getDriverGamepad(){
         return driverGamepad;
