@@ -61,13 +61,13 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().run();
     Drivetrain drivetrain = Drivetrain.getInstance();
 
-    // drivetrain.getOdometry().update(
-    //   Rotation2d.fromDegrees(drivetrain.getPigeon().getFusedHeading()), 
-    //   drivetrain.getTopLeft().getState(),
-    //   drivetrain.getTopRight().getState(), 
-    //   drivetrain.getBottomLeft().getState(), 
-    //   drivetrain.getBottomRight().getState()
-    // );
+    drivetrain.getOdometry().update(
+      Rotation2d.fromDegrees(-drivetrain.getPigeon().getFusedHeading()), 
+      drivetrain.getTopLeft().getState(),
+      drivetrain.getTopRight().getState(), 
+      drivetrain.getBottomLeft().getState(), 
+      drivetrain.getBottomRight().getState()
+    );
 
     
     

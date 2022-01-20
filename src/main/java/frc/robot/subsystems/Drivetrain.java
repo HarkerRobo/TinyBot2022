@@ -2,6 +2,8 @@ package frc.robot.subsystems;
 
 import java.util.function.Consumer;
 
+import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix.sensors.PigeonImuJNI;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -34,7 +36,7 @@ public class Drivetrain extends SubsystemBase {
 
     private static final boolean TOP_RIGHT_ROTATION_SENSOR_PHASE = false;
     private static final boolean TOP_RIGHT_TRANSLATION_SENSOR_PHASE = RobotMap.IS_COMP ? false : true;
-    private static final boolean TOP_RIGHT_ROTATION_INVERTED = true;
+    private static final boolean TOP_RIGHT_ROTATION_INVERTED = false;
     private static final boolean TOP_RIGHT_TRANSLATION_INVERTED = false;
 
     private static final boolean BOTTOM_LEFT_ROTATION_SENSOR_PHASE = RobotMap.IS_COMP ? true : false;
@@ -95,8 +97,22 @@ public class Drivetrain extends SubsystemBase {
 
     private SwerveDriveOdometry odometry;
 
+    public static final double MP_X_KP = 1;
+    public static final double MP_X_KI = 0;
+    public static final double MP_X_KD = 0;
 
-    private HSPigeon pigeon;
+    public static final double MP_Y_KP = 1;
+    public static final double MP_Y_KI = 0;
+    public static final double MP_Y_KD = 0;
+
+    public static final double MP_THETA_KP = 1;
+    public static final double MP_THETA_KI = 0;
+    public static final double MP_THETA_KD = 0;
+
+    public static final double MP_MAX_DRIVE_VELOCITY = 1;
+    public static final double MP_MAX_DRIVE_ACCELERATION = 0.5;
+
+    private PigeonIMU pigeon;
 
     public Drivetrain() {
         topLeft = new SwerveModule(TOP_LEFT_ROTATION_SENSOR_PHASE, TOP_LEFT_TRANSLATION_SENSOR_PHASE,
@@ -110,14 +126,14 @@ public class Drivetrain extends SubsystemBase {
      
 
         pigeon=new HSPigeon(0);
-        pigeon.zero();
+        pigeon.setFusedHeading(0);
         frontLeftLocation = new Translation2d(-DT_LENGTH / 2, DT_WIDTH / 2);
         frontRightLocation = new Translation2d(DT_LENGTH / 2, DT_WIDTH / 2);
         backLeftLocation = new Translation2d(-DT_LENGTH / 2, -DT_WIDTH / 2);
         backRightLocation = new Translation2d(DT_LENGTH / 2, -DT_WIDTH / 2);
         
         kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
-        odometry = new SwerveDriveOdometry(kinematics, Rotation2d.fromDegrees(pigeon.getFusedHeading()), new Pose2d(0,0, new Rotation2d()));
+        odometry = new SwerveDriveOdometry(kinematics, Rotation2d.fromDegrees(-pigeon.getFusedHeading()), new Pose2d(0,0, Rotation2d.fromDegrees(-pigeon.getFusedHeading())));
     }
 
     public SwerveModule getTopLeft() {
@@ -136,7 +152,7 @@ public class Drivetrain extends SubsystemBase {
         return bottomRight;
     }
 
-    public HSPigeon getPigeon(){
+    public PigeonIMU getPigeon(){
         return pigeon;
     }
 
