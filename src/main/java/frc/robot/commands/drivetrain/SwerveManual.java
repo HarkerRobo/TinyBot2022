@@ -78,7 +78,7 @@ public class SwerveManual extends IndefiniteCommand {
 
     ChassisSpeeds chassis;
         if(Drivetrain.getInstance().isRobotCentric()){
-                chassis = ChassisSpeeds.fromFieldRelativeSpeeds(translationx, translationy, -angularVelocity, Rotation2d.fromDegrees(Drivetrain.getInstance().getPigeon().getFusedHeading()));
+                chassis = ChassisSpeeds.fromFieldRelativeSpeeds(translationx, translationy, -angularVelocity, Rotation2d.fromDegrees(-Drivetrain.getInstance().getPigeon().getFusedHeading()));
 
         }
         else{
