@@ -114,7 +114,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    Limelight.setLEDS(false);
+    // Limelight.setLEDS(false);
     // m_autoSelected = m_chooser.getSelected();
     // // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     // System.out.println("Auto selected: " + m_autoSelected);

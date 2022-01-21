@@ -41,6 +41,10 @@ public class OI {
             Drivetrain.getInstance().getPigeon().setFusedHeading(0);
         }));
 
+        driverGamepad.getButtonY().whenPressed(new InstantCommand(() -> {
+            Drivetrain.getInstance().toggleDriveMode();
+        }));
+
         driverGamepad.getButtonB().whenPressed(new HSSwerveDriveController(Trajectories.moveForward, Rotation2d.fromDegrees(0)));
 
     }

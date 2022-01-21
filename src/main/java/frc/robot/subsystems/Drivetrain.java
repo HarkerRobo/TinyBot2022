@@ -112,6 +112,8 @@ public class Drivetrain extends SubsystemBase {
     public static final double MP_MAX_DRIVE_VELOCITY = 1;
     public static final double MP_MAX_DRIVE_ACCELERATION = 0.5;
 
+    public boolean robotCentric=true;
+
     private PigeonIMU pigeon;
 
     public Drivetrain() {
@@ -237,6 +239,14 @@ public class Drivetrain extends SubsystemBase {
         }
 
         return targetAngle;
+    }
+
+    public void toggleDriveMode(){
+        robotCentric=!robotCentric;
+    }
+
+    public boolean isRobotCentric(){
+        return robotCentric;
     }
 
 	/**
