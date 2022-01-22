@@ -50,8 +50,8 @@ public class Drivetrain extends SubsystemBase {
 
 
     public static final int TL_OFFSET = 1626;
-    public static final int TR_OFFSET = 2905;
-    public static final int BL_OFFSET = 920;
+    public static final int TR_OFFSET = 2955;
+    public static final int BL_OFFSET = 1020;
     public static final int BR_OFFSET = 2940;
 
     private Translation2d frontLeftLocation;
@@ -104,7 +104,7 @@ public class Drivetrain extends SubsystemBase {
     public static final double MP_Y_KI = 0;
     public static final double MP_Y_KD = 0;
 
-    public static final double MP_THETA_KP = 1;
+    public static final double MP_THETA_KP = 3;
     public static final double MP_THETA_KI = 0;
     public static final double MP_THETA_KD = 0;
 

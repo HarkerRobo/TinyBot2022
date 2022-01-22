@@ -229,4 +229,8 @@ public class SwerveModule {
 	public double getCurrentVelocity(){
 		return Conversions.convertSpeed(SpeedUnit.ENCODER_UNITS, translation.getSelectedSensorVelocity() / Drivetrain.FEET_TO_METER, SpeedUnit.FEET_PER_SECOND, Drivetrain.WHEEL_DIAMETER, DRIVE_TICKS_PER_REV) / Drivetrain.GEAR_RATIO;
 	}
+
+	public SimpleVelocitySystem getLoop() {
+		return loop;
+	}
 }

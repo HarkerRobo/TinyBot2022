@@ -40,15 +40,21 @@ public class OI {
         driverGamepad.getButtonX().whenPressed(new InstantCommand(() -> {Drivetrain.getInstance().getPigeon().addFusedHeading(-63.9886 * Drivetrain.getInstance().getPigeon().getFusedHeading());
         }));
 
-        driverGamepad.getButtonY().whenPressed(new InstantCommand(() -> {
+        driverGamepad.getButtonA().whenPressed(new InstantCommand(() -> {
             Drivetrain.getInstance().toggleDriveMode();
         }));
 
-        driverGamepad.getUpDPadButton().whenPressed(new HSSwerveDriveController(Trajectories.moveForward, Rotation2d.fromDegrees(0)));
-        driverGamepad.getDownDPadButton().whenPressed(new HSSwerveDriveController(Trajectories.moveBackward, Rotation2d.fromDegrees(0)));
-        driverGamepad.getLeftDPadButton().whenPressed(new HSSwerveDriveController(Trajectories.moveLeft, Rotation2d.fromDegrees(0)));
-        driverGamepad.getRightDPadButton().whenPressed(new HSSwerveDriveController(Trajectories.moveRight, Rotation2d.fromDegrees(0)));
+        // driverGamepad.getButtonStart().whenPressed(new InstantCommand(() -> {
+        //     Drivetrain.getInstance().getPigeon().addFusedHeading(-63.9886 * 180);
+        // }));
 
+        // driverGamepad.getUpDPadButton().whenPressed(new HSSwerveDriveController(Trajectories.moveForward, Rotation2d.fromDegrees(0)));
+        // driverGamepad.getDownDPadButton().whenPressed(new HSSwerveDriveController(Trajectories.moveBackward, Rotation2d.fromDegrees(0)));
+        // driverGamepad.getLeftDPadButton().whenPressed(new HSSwerveDriveController(Trajectories.moveLeft, Rotation2d.fromDegrees(0)));
+        // driverGamepad.getRightDPadButton().whenPressed(new HSSwerveDriveController(Trajectories.moveRight, Rotation2d.fromDegrees(0)));
+
+        // driverGamepad.getButtonA().whenPressed(new HSSwerveDriveController(Trajectories.clockwisecircle, Rotation2d.fromDegrees(0)));
+        // driverGamepad.getButtonB().whenPressed(new HSSwerveDriveController(Trajectories.counterclockwisecircle, Rotation2d.fromDegrees(0)));
     }
         // operatorGamepad.getButtonA().whenPressed(new InstantCommand(() -> {
         //     Intake.getInstance().invertSolenoid();

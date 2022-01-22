@@ -151,6 +151,10 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     CommandScheduler.getInstance().run();
     SmartDashboard.putNumber("angle", Drivetrain.getInstance().getPigeon().getFusedHeading());
+    SmartDashboard.putNumber("topLeftOutput", Drivetrain.getInstance().getTopLeft().getLoop().getOutput());
+    SmartDashboard.putNumber("topRightOutput", Drivetrain.getInstance().getTopRight().getLoop().getOutput());
+    SmartDashboard.putNumber("bottomLeftOutput", Drivetrain.getInstance().getBottomLeft().getLoop().getOutput());
+    SmartDashboard.putNumber("bottomRightOutput", Drivetrain.getInstance().getBottomRight().getLoop().getOutput());
   }
 
   /**

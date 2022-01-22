@@ -18,7 +18,8 @@ public class SwerveManual extends IndefiniteCommand {
     private static final double kD=0.0;//02;
     private static final double TX_SETPOINT=0;
     private static final double I_ZONE = 0;
-    private static final double angleKP=1;
+    private static final double angleKP=0.15;
+    private static double pigeonAngle = Drivetrain.getInstance().getPigeon().getFusedHeading();
 
 
     private PIDController pid;
@@ -34,16 +35,14 @@ public class SwerveManual extends IndefiniteCommand {
         double translationx = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftX(), OI.DEADBAND);
         double translationy = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftY(), OI.DEADBAND);
         double chasisMagnitude=Math.sqrt(translationx*translationx + translationy*translationy);
-        
 
         if(chasisMagnitude<(Drivetrain.MIN_OUTPUT)){
             translationx=0;
             translationy=0;
             if(Math.abs(angularVelocity)<(Drivetrain.MIN_OUTPUT)){
+            pigeonAngle = Drivetrain.getInstance().getPigeon().getFusedHeading();
             angularVelocity=0.000001;}
         }
-    
-
         // if(OI.getInstance().getDriverGamepad().getButtonBState() || OI.getInstance().getOperatorGamepad().getButtonBState()){
         //     Shooter.getInstance().setAutoHoodAngle();
         // }
@@ -54,14 +53,6 @@ public class SwerveManual extends IndefiniteCommand {
         translationx *= Drivetrain.MAX_DRIVE_VEL * OUTPUT_MULTIPLIER;
         translationy *= Drivetrain.MAX_DRIVE_VEL * OUTPUT_MULTIPLIER;
 
-        if (OI.getInstance().getDriverGamepad().getButtonBumperLeftState()) {
-            translationx *= 0.4;
-            translationy *= 0.4;
-
-
-            
-        }
-
        // System.out.println(translationx + " " + translationy);
         // double rotation =
         // MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getRightX(),
@@ -71,13 +62,16 @@ public class SwerveManual extends IndefiniteCommand {
     // if(Math.abs(MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getRightX(), OI.DEADBAND))<0.05){
     //     angularVelocity=angleKP*(pigeonAngle - Drivetrain.getInstance().getPigeon().getFusedHeading());
     // }
+    // else
+    //     pigeonAngle = Drivetrain.getInstance().getPigeon().getFusedHeading();
 
-    if(OI.getInstance().getDriverGamepad().getButtonAState()){
+    if(OI.getInstance().getDriverGamepad().getButtonBState()){
         translationx*=0.5;
         translationy*=0.5;
         angularVelocity*=0.5;
     }
 
+    angularVelocity*=0.6;
 
 
     ChassisSpeeds chassis;
