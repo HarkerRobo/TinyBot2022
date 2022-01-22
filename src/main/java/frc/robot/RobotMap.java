@@ -51,4 +51,5 @@ public class RobotMap {
     
     public static final boolean DEMO_MODE=false;
 	public static final boolean IS_COMP = true;
+    public static final double LOOP_TIME = 0.02;
 }

@@ -8,6 +8,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
+import com.ctre.phoenix.sensors.SensorVelocityMeasPeriod;
+
 import harkerrobolib.util.Conversions.SpeedUnit;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -28,10 +30,10 @@ public class SwerveModule {
     private static final double ANGLE_CURRENT_PEAK = 20;
     private static final double ANGLE_CURRENT_PEAK_DUR = 0.02;
 
-	private static final double TRANSLATION_P = 0.32126;
-	private static final double TRANSLATION_I = 0.0;
-	private static final double TRANSLATION_D = 0;
-	private static final double TRANSLATION_F = 0.04698;
+	// private static final double TRANSLATION_P = 0.32126;
+	// private static final double TRANSLATION_I = 0.0;
+	// private static final double TRANSLATION_D = 0;
+	// private static final double TRANSLATION_F = 0.04698;
 
 	private static final double ANGLE_P = 1.1;
 	private static final double ANGLE_I = 0;
@@ -39,6 +41,16 @@ public class SwerveModule {
 	private static final double ENCODER_TICKS = 4096.0;
 	private static final double EPSILON_OUTPUT = 1e-4;
 	private static final int DRIVE_TICKS_PER_REV = 2048;
+
+	private static final double DRIVE_KS = 0.578;
+	private static final double DRIVE_KV = 2.0473;
+	private static final double DRIVE_KA = 0.13018;
+
+	private static final double MAX_CONTROL_EFFORT = 12; // volts 
+    private static final double MODEL_STANDARD_DEVIATION = 1;
+    private static final double ENCODER_STANDARD_DEVIATION = 0.1;
+
+	private SimpleVelocitySystem loop;
 
 	private boolean ROTATION_SENSOR_PHASE;
 	private boolean TRANSLATION_SENSOR_PHASE;
@@ -60,6 +72,8 @@ public class SwerveModule {
 		translation = new HSFalcon(translationDriveId);
 		rotationMotorInit();
 		translationMotorInit();
+		loop = new SimpleVelocitySystem(DRIVE_KS, DRIVE_KV, DRIVE_KA,
+			MAX_CONTROL_EFFORT, MODEL_STANDARD_DEVIATION, ENCODER_STANDARD_DEVIATION, RobotMap.LOOP_TIME);
 	}
 
 	public HSFalcon getTranslationMotor() {
@@ -100,10 +114,13 @@ public class SwerveModule {
 
 		translation.configStatorCurrentLimit(new StatorCurrentLimitConfiguration(true, DRIVE_CURRENT_CONTINUOUS, DRIVE_CURRENT_PEAK, DRIVE_CURRENT_PEAK_DUR));
 
-		translation.config_kP(RobotMap.SLOT_INDEX, TRANSLATION_P);
-		translation.config_kI(RobotMap.SLOT_INDEX, TRANSLATION_I);
-		translation.config_kD(RobotMap.SLOT_INDEX, TRANSLATION_D);
-		translation.config_kF(RobotMap.SLOT_INDEX, TRANSLATION_F);
+		// translation.config_kP(RobotMap.SLOT_INDEX, TRANSLATION_P);
+		// translation.config_kI(RobotMap.SLOT_INDEX, TRANSLATION_I);
+		// translation.config_kD(RobotMap.SLOT_INDEX, TRANSLATION_D);
+		// translation.config_kF(RobotMap.SLOT_INDEX, TRANSLATION_F);
+
+		translation.configVelocityMeasurementWindow(1);
+		translation.configVelocityMeasurementPeriod(SensorVelocityMeasPeriod.Period_10Ms);
 
 		translation.selectProfileSlot(RobotMap.SLOT_INDEX, RobotMap.LOOP_INDEX);
 
@@ -119,11 +136,10 @@ public class SwerveModule {
 
 	public SwerveModuleState getState() {
 		return new SwerveModuleState(
-			Conversions.convertSpeed(SpeedUnit.ENCODER_UNITS, translation.getSelectedSensorVelocity() / Drivetrain.FEET_TO_METER, SpeedUnit.FEET_PER_SECOND, Drivetrain.WHEEL_DIAMETER, 2048) / Drivetrain.GEAR_RATIO, 
+			getCurrentVelocity(), 
 			Rotation2d.fromDegrees(rotation.getSelectedSensorPosition() * 360 / 4096)
 		);
 	}
-
 
 	public void setSwerveManual(SwerveModuleState state){
 		//state = optimize(state, getRotationAngle());
@@ -152,8 +168,7 @@ public class SwerveModule {
 			speed *= -1;
 		}
 
-		translation.set(TalonFXControlMode.Velocity, Drivetrain.GEAR_RATIO * Conversions.convertSpeed(SpeedUnit.FEET_PER_SECOND,  speed * Drivetrain.FEET_TO_METER, SpeedUnit.ENCODER_UNITS, Drivetrain.WHEEL_DIAMETER, 2048));
-		
+		setDriveOutput(speed, false);
 		rotation.set(ControlMode.Position,angle * (4096 / 360));
 
 
@@ -198,8 +213,9 @@ public class SwerveModule {
         if(isPercentOutput) {
             translation.set(TalonFXControlMode.PercentOutput, output);
         } else {
-            translation.set(TalonFXControlMode.Velocity, Conversions.convertSpeed(SpeedUnit.FEET_PER_SECOND, output * Drivetrain.FEET_PER_METER,
-					SpeedUnit.ENCODER_UNITS, Drivetrain.WHEEL_DIAMETER, DRIVE_TICKS_PER_REV) * Drivetrain.GEAR_RATIO);
+			loop.set(output);
+			loop.update(getCurrentVelocity());
+            translation.set(TalonFXControlMode.PercentOutput, loop.getOutput());
         }
 	}
 	
@@ -210,4 +226,7 @@ public class SwerveModule {
         return rotation.getSelectedSensorPosition() * 360.0 / SwerveModule.ENCODER_TICKS; //Convert encoder ticks to degrees
     }
 
+	public double getCurrentVelocity(){
+		return Conversions.convertSpeed(SpeedUnit.ENCODER_UNITS, translation.getSelectedSensorVelocity() / Drivetrain.FEET_TO_METER, SpeedUnit.FEET_PER_SECOND, Drivetrain.WHEEL_DIAMETER, DRIVE_TICKS_PER_REV) / Drivetrain.GEAR_RATIO;
+	}
 }

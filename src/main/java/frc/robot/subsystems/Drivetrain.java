@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import java.util.function.Consumer;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
-import com.ctre.phoenix.sensors.PigeonImuJNI;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
