@@ -150,6 +150,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     CommandScheduler.getInstance().run();
+    SmartDashboard.putNumber("angle", Drivetrain.getInstance().getPigeon().getFusedHeading());
   }
 
   /**

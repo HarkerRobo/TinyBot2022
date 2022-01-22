@@ -37,15 +37,17 @@ public class OI {
 
     private void initBindings() {
 
-        driverGamepad.getButtonA().whenPressed(new InstantCommand(() -> {
-            Drivetrain.getInstance().getPigeon().setFusedHeading(0);
+        driverGamepad.getButtonX().whenPressed(new InstantCommand(() -> {Drivetrain.getInstance().getPigeon().addFusedHeading(-63.9886 * Drivetrain.getInstance().getPigeon().getFusedHeading());
         }));
 
         driverGamepad.getButtonY().whenPressed(new InstantCommand(() -> {
             Drivetrain.getInstance().toggleDriveMode();
         }));
 
-        driverGamepad.getButtonB().whenPressed(new HSSwerveDriveController(Trajectories.moveForward, Rotation2d.fromDegrees(0)));
+        driverGamepad.getUpDPadButton().whenPressed(new HSSwerveDriveController(Trajectories.moveForward, Rotation2d.fromDegrees(0)));
+        driverGamepad.getDownDPadButton().whenPressed(new HSSwerveDriveController(Trajectories.moveBackward, Rotation2d.fromDegrees(0)));
+        driverGamepad.getLeftDPadButton().whenPressed(new HSSwerveDriveController(Trajectories.moveLeft, Rotation2d.fromDegrees(0)));
+        driverGamepad.getRightDPadButton().whenPressed(new HSSwerveDriveController(Trajectories.moveRight, Rotation2d.fromDegrees(0)));
 
     }
         // operatorGamepad.getButtonA().whenPressed(new InstantCommand(() -> {

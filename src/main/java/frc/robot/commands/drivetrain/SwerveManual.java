@@ -62,10 +62,6 @@ public class SwerveManual extends IndefiniteCommand {
             
         }
 
-        if(RobotMap.DEMO_MODE && !(OI.getInstance().getDriverGamepad().getButtonBumperLeftState() && OI.getInstance().getDriverGamepad().getButtonBumperRightState())){
-            translationx *= 0.3;
-            translationy *= 0.3;
-        }
        // System.out.println(translationx + " " + translationy);
         // double rotation =
         // MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getRightX(),
@@ -76,8 +72,16 @@ public class SwerveManual extends IndefiniteCommand {
     //     angularVelocity=angleKP*(pigeonAngle - Drivetrain.getInstance().getPigeon().getFusedHeading());
     // }
 
+    if(OI.getInstance().getDriverGamepad().getButtonAState()){
+        translationx*=0.5;
+        translationy*=0.5;
+        angularVelocity*=0.5;
+    }
+
+
+
     ChassisSpeeds chassis;
-        if(Drivetrain.getInstance().isRobotCentric()){
+        if(Drivetrain.getInstance().isFieldCentric()){
                 chassis = ChassisSpeeds.fromFieldRelativeSpeeds(translationx, translationy, -angularVelocity, Rotation2d.fromDegrees(-Drivetrain.getInstance().getPigeon().getFusedHeading()));
 
         }

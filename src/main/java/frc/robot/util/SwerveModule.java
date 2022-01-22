@@ -85,7 +85,7 @@ public class SwerveModule {
 	}
 
 	public double getRotationAngle(){
-		return rotation.getSelectedSensorPosition()*(360.0/4096);
+		return rotation.getSelectedSensorPosition()*(360.0/ENCODER_TICKS);
 	}
 
 	private void rotationMotorInit() {
