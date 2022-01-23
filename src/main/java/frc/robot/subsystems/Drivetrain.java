@@ -128,10 +128,10 @@ public class Drivetrain extends SubsystemBase {
 
         pigeon=new HSPigeon(0);
         pigeon.setFusedHeading(0);
-        frontLeftLocation = new Translation2d(-DT_LENGTH / 2, DT_WIDTH / 2);
-        frontRightLocation = new Translation2d(DT_LENGTH / 2, DT_WIDTH / 2);
-        backLeftLocation = new Translation2d(-DT_LENGTH / 2, -DT_WIDTH / 2);
-        backRightLocation = new Translation2d(DT_LENGTH / 2, -DT_WIDTH / 2);
+        frontLeftLocation = new Translation2d(-DT_WIDTH / 2, DT_LENGTH / 2);
+        frontRightLocation = new Translation2d(DT_WIDTH / 2, DT_LENGTH / 2);
+        backLeftLocation = new Translation2d(-DT_WIDTH / 2, -DT_LENGTH / 2);
+        backRightLocation = new Translation2d(DT_WIDTH / 2, -DT_LENGTH / 2);
         
         kinematics = new SwerveDriveKinematics(frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
         odometry = new SwerveDriveOdometry(kinematics, Rotation2d.fromDegrees(-pigeon.getFusedHeading()), new Pose2d(0,0, Rotation2d.fromDegrees(-pigeon.getFusedHeading())));
@@ -167,6 +167,7 @@ public class Drivetrain extends SubsystemBase {
     public void setAngleAndDriveVelocity(SwerveModuleState[] states){
         topLeft.setSwerveManual(states[0]);
         SmartDashboard.putNumber("TL VEL", states[0].speedMetersPerSecond);
+        SmartDashboard.putNumber("TL actual vel", topLeft.getCurrentVelocity());
         topRight.setSwerveManual(states[1]);
         bottomLeft.setSwerveManual(states[2]);
         bottomRight.setSwerveManual(states[3]);

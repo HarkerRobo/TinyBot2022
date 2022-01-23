@@ -46,9 +46,9 @@ public class SwerveModule {
 	private static final double DRIVE_KV = 2.0473;
 	private static final double DRIVE_KA = 0.13018;
 
-	private static final double MAX_CONTROL_EFFORT = 12; // volts 
-    private static final double MODEL_STANDARD_DEVIATION = 1;
-    private static final double ENCODER_STANDARD_DEVIATION = 0.1;
+	private static final double MAX_CONTROL_EFFORT = 10; // volts 
+    private static final double MODEL_STANDARD_DEVIATION = 2;
+    private static final double ENCODER_STANDARD_DEVIATION = 0.08;
 
 	private SimpleVelocitySystem loop;
 
