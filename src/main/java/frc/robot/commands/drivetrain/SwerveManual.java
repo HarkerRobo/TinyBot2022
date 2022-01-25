@@ -5,6 +5,8 @@ import harkerrobolib.commands.IndefiniteCommand;
 import harkerrobolib.util.MathUtil;
 import frc.robot.util.Limelight;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.filter.Debouncer;
+import edu.wpi.first.math.filter.Debouncer.DebounceType;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -18,8 +20,11 @@ public class SwerveManual extends IndefiniteCommand {
     private static final double kD=0.0;//02;
     private static final double TX_SETPOINT=0;
     private static final double I_ZONE = 0;
-    private static final double angleKP=0.15;
+    private static final double angleKP=0.2;
     private static double pigeonAngle = Drivetrain.getInstance().getPigeon().getFusedHeading();
+    private Debouncer debouncer = new Debouncer(0.3, DebounceType.kRising);
+
+    private double lastPigeonHeading = 0;
 
 
     private PIDController pid;
@@ -40,7 +45,7 @@ public class SwerveManual extends IndefiniteCommand {
             translationx=0;
             translationy=0;
             if(Math.abs(angularVelocity)<(Drivetrain.MIN_OUTPUT)){
-            pigeonAngle = Drivetrain.getInstance().getPigeon().getFusedHeading();
+            // pigeonAngle = Drivetrain.getInstance().getPigeon().getFusedHeading() + 0.1 ;
             angularVelocity=0.000001;}
         }
         // if(OI.getInstance().getDriverGamepad().getButtonBState() || OI.getInstance().getOperatorGamepad().getButtonBState()){
@@ -57,32 +62,34 @@ public class SwerveManual extends IndefiniteCommand {
         // double rotation =
         // MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getRightX(),
         // OI.DEADBAND);
+        angularVelocity*=0.6;
+        if(debouncer.calculate(Math.abs(MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getRightX(), OI.DEADBAND))<0.05)){
+            angularVelocity=angleKP*(pigeonAngle - Drivetrain.getInstance().getPigeon().getFusedHeading());
+            SmartDashboard.putBoolean("holding pigeon angle", true);
+        }
+        else {
+            pigeonAngle = Drivetrain.getInstance().getPigeon().getFusedHeading();
+            SmartDashboard.putBoolean("holding pigeon angle", false);
+        }
+            
 
-    
-    // if(Math.abs(MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getRightX(), OI.DEADBAND))<0.05){
-    //     angularVelocity=angleKP*(pigeonAngle - Drivetrain.getInstance().getPigeon().getFusedHeading());
-    // }
-    // else
-    //     pigeonAngle = Drivetrain.getInstance().getPigeon().getFusedHeading();
-
-    if(OI.getInstance().getDriverGamepad().getButtonBState()){
-        translationx*=0.5;
-        translationy*=0.5;
-        angularVelocity*=0.5;
-    }
-
-    angularVelocity*=0.6;
+        if(OI.getInstance().getDriverGamepad().getButtonBState()){
+            translationx*=0.5;
+            translationy*=0.5;
+            angularVelocity*=0.5;
+        }
 
 
-    ChassisSpeeds chassis;
+
+        ChassisSpeeds chassis;
         if(Drivetrain.getInstance().isFieldCentric()){
                 chassis = ChassisSpeeds.fromFieldRelativeSpeeds(translationx, translationy, -angularVelocity, Rotation2d.fromDegrees(-Drivetrain.getInstance().getPigeon().getFusedHeading()));
-
         }
         else{
             chassis = ChassisSpeeds.fromFieldRelativeSpeeds(translationx, translationy, -angularVelocity, Rotation2d.fromDegrees(0));
 
         }
         Drivetrain.getInstance().setAngleAndDriveVelocity(Drivetrain.getInstance().getKinematics().toSwerveModuleStates(chassis));
+        lastPigeonHeading = Drivetrain.getInstance().getPigeon().getFusedHeading(); 
     }
 }
