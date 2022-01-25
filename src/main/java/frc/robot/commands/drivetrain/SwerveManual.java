@@ -21,7 +21,7 @@ public class SwerveManual extends IndefiniteCommand {
     private static final double TX_SETPOINT=0;
     private static final double I_ZONE = 0;
     private static final double angleKP=0.2;
-    private static double pigeonAngle = Drivetrain.getInstance().getPigeon().getFusedHeading();
+    public static double pigeonAngle = Drivetrain.getInstance().getPigeon().getFusedHeading();
     private Debouncer debouncer = new Debouncer(0.3, DebounceType.kRising);
 
     private double lastPigeonHeading = 0;

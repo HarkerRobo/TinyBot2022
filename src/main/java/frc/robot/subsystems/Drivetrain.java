@@ -96,20 +96,20 @@ public class Drivetrain extends SubsystemBase {
 
     private SwerveDriveOdometry odometry;
 
-    public static final double MP_X_KP = 1;
+    public static final double MP_X_KP = 8;
     public static final double MP_X_KI = 0;
     public static final double MP_X_KD = 0;
 
-    public static final double MP_Y_KP = 1;
+    public static final double MP_Y_KP = 8;
     public static final double MP_Y_KI = 0;
     public static final double MP_Y_KD = 0;
 
-    public static final double MP_THETA_KP = 3;
+    public static final double MP_THETA_KP = 8;
     public static final double MP_THETA_KI = 0;
     public static final double MP_THETA_KD = 0;
 
-    public static final double MP_MAX_DRIVE_VELOCITY = 1;
-    public static final double MP_MAX_DRIVE_ACCELERATION = 0.5;
+    public static final double MP_MAX_DRIVE_VELOCITY = 2;
+    public static final double MP_MAX_DRIVE_ACCELERATION = 1;
 
     public boolean fieldCentric=false;
 

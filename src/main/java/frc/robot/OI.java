@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.auto.Trajectories;
 import frc.robot.auto.Trajectories;
 import frc.robot.commands.drivetrain.HSSwerveDriveController;
+import frc.robot.commands.drivetrain.SwerveManual;
 // import frc.robot.commands.drivetrain.HSSwerveDriveController;
 // import frc.robot.commands.intake.IntakeAutonControlForward;
 // import frc.robot.commands.intake.MoveBallsToShooter;
@@ -37,12 +38,13 @@ public class OI {
 
     private void initBindings() {
 
-        driverGamepad.getButtonX().whenPressed(new InstantCommand(() -> {Drivetrain.getInstance().getPigeon().addFusedHeading(-63.9886 * Drivetrain.getInstance().getPigeon().getFusedHeading());
-        }));
+        driverGamepad.getButtonX().whenPressed(new InstantCommand(() -> {Drivetrain.getInstance().getPigeon().addFusedHeading(-63.9886 * Drivetrain.getInstance().getPigeon().getFusedHeading()); SwerveManual.pigeonAngle=0;}));
 
         driverGamepad.getButtonA().whenPressed(new InstantCommand(() -> {
             Drivetrain.getInstance().toggleDriveMode();
         }));
+
+        driverGamepad.getButtonY().whenPressed(new HSSwerveDriveController(Trajectories.fiveBallAuto, Rotation2d.fromDegrees(90),Rotation2d.fromDegrees(90)));
 
         // driverGamepad.getButtonStart().whenPressed(new InstantCommand(() -> {
         //     Drivetrain.getInstance().getPigeon().addFusedHeading(-63.9886 * 180);
