@@ -11,14 +11,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.OI;
-import frc.robot.RobotMap;
 
 public class SwerveManual extends IndefiniteCommand {
     private static final double OUTPUT_MULTIPLIER= 1;
     private static final double kP=0.03;
     private static final double kI=0.0;//00002;
     private static final double kD=0.0;//02;
-    private static final double TX_SETPOINT=0;
     private static final double I_ZONE = 0;
     private static final double angleKP=0.2;
     public static double pigeonAngle = Drivetrain.getInstance().getPigeon().getFusedHeading();
@@ -39,14 +37,15 @@ public class SwerveManual extends IndefiniteCommand {
         double angularVelocity = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getRightX(), OI.DEADBAND);
         double translationx = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftX(), OI.DEADBAND);
         double translationy = MathUtil.mapJoystickOutput(OI.getInstance().getDriverGamepad().getLeftY(), OI.DEADBAND);
-        double chasisMagnitude=Math.sqrt(translationx*translationx + translationy*translationy);
+        double chasisMagnitude = Math.sqrt(Math.pow(translationx,2) + Math.pow(translationy,2));
 
         if(chasisMagnitude<(Drivetrain.MIN_OUTPUT)){
-            translationx=0;
-            translationy=0;
+            translationx = 0;
+            translationy = 0;
             if(Math.abs(angularVelocity)<(Drivetrain.MIN_OUTPUT)){
-            // pigeonAngle = Drivetrain.getInstance().getPigeon().getFusedHeading() + 0.1 ;
-            angularVelocity=0.000001;}
+                // pigeonAngle = Drivetrain.getInstance().getPigeon().getFusedHeading() + 0.1 ;
+                angularVelocity = 0.000001;
+            }
         }
         // if(OI.getInstance().getDriverGamepad().getButtonBState() || OI.getInstance().getOperatorGamepad().getButtonBState()){
         //     Shooter.getInstance().setAutoHoodAngle();
@@ -82,13 +81,10 @@ public class SwerveManual extends IndefiniteCommand {
 
 
         ChassisSpeeds chassis;
-        if(Drivetrain.getInstance().isFieldCentric()){
-                chassis = ChassisSpeeds.fromFieldRelativeSpeeds(translationx, translationy, -angularVelocity, Rotation2d.fromDegrees(-Drivetrain.getInstance().getPigeon().getFusedHeading()));
-        }
-        else{
+        if(Drivetrain.getInstance().isFieldCentric())
+            chassis = ChassisSpeeds.fromFieldRelativeSpeeds(translationx, translationy, -angularVelocity, Rotation2d.fromDegrees(-Drivetrain.getInstance().getPigeon().getFusedHeading()));
+        else
             chassis = ChassisSpeeds.fromFieldRelativeSpeeds(translationx, translationy, -angularVelocity, Rotation2d.fromDegrees(0));
-
-        }
         Drivetrain.getInstance().setAngleAndDriveVelocity(Drivetrain.getInstance().getKinematics().toSwerveModuleStates(chassis));
         lastPigeonHeading = Drivetrain.getInstance().getPigeon().getFusedHeading(); 
     }

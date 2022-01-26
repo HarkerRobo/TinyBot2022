@@ -35,9 +35,9 @@ public class SwerveModule {
 	// private static final double TRANSLATION_D = 0;
 	// private static final double TRANSLATION_F = 0.04698;
 
-	private static final double ANGLE_P = 1.1;
+	private static final double ANGLE_P = 0.8;
 	private static final double ANGLE_I = 0;
-	private static final double ANGLE_D = 10;
+	private static final double ANGLE_D = 15;
 	private static final double ENCODER_TICKS = 4096.0;
 	private static final double EPSILON_OUTPUT = 1e-4;
 	private static final int DRIVE_TICKS_PER_REV = 2048;
@@ -102,6 +102,10 @@ public class SwerveModule {
 		rotation.config_kD(RobotMap.SLOT_INDEX, ANGLE_D);
 
 		rotation.selectProfileSlot(RobotMap.SLOT_INDEX, RobotMap.LOOP_INDEX);
+
+		
+		rotation.configVelocityMeasurementWindow(16);
+		rotation.configVelocityMeasurementPeriod(SensorVelocityMeasPeriod.Period_25Ms);
 
 		rotation.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, RobotMap.SLOT_INDEX);
 	}

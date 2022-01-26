@@ -1,5 +1,6 @@
 package frc.robot.auto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -61,31 +62,32 @@ public class Trajectories {
         new Pose2d(8.3,1.5,Rotation2d.fromDegrees(180))
     ), config);
 
-    public static final Trajectory twoBallAuto = generateStraightTrajectory(new Translation2d[] {
+    public static final List<Trajectory> twoBallAuto = generateDirectTrajectories(new Translation2d[] {
         new Translation2d(7.64, 1.92), new Translation2d(7.66, 0.92)});
     
-    public static final Trajectory twoBallAutoMiddle = generateStraightTrajectory(new Translation2d[] {
+    public static final List<Trajectory> twoBallAutoMiddle = generateDirectTrajectories(new Translation2d[] {
         new Translation2d(6.72, 2.51), new Translation2d(5.72, 2.03)});
     
-    public static final Trajectory threeBallAuto = generateStraightTrajectory(new Translation2d[] {
+    public static final List<Trajectory> threeBallAuto = generateDirectTrajectories(new Translation2d[] {
         new Translation2d(7.70, 1.89), new Translation2d(7.70, 0.96), new Translation2d(5.76, 1.86)});
 
-    public static final Trajectory twoBallAutoTop = generateStraightTrajectory(new Translation2d[] {
+    public static final List<Trajectory> twoBallAutoTop = generateDirectTrajectories(new Translation2d[] {
         new Translation2d(6.22, 5.18), new Translation2d(5.49, 5.81)});
     
-    public static final Trajectory twoBallAutoStealAndYeet = generateStraightTrajectory(new Translation2d[] {
+    public static final List<Trajectory> twoBallAutoStealAndYeet = generateDirectTrajectories(new Translation2d[] {
         new Translation2d(6.21, 5.13), new Translation2d(5.51, 5.77), new Translation2d(5.63, 6.80), new Translation2d(4.63, 3.89)});
 
-    public static final Trajectory fiveBallAuto = generateStraightTrajectory(new Translation2d[] {
+    public static final List<Trajectory> fiveBallAuto = generateDirectTrajectories(new Translation2d[] {
         new Translation2d(7.86,1.83), new Translation2d(7.76,0.90), new Translation2d(5.70,2.27), new Translation2d(1.69,1.55), new Translation2d(3.82,3.10)});
 
-    public static Trajectory generateStraightTrajectory(Translation2d[] input){
-        Trajectory out = TrajectoryGenerator.generateTrajectory(List.of(
+    public static List<Trajectory> generateDirectTrajectories(Translation2d[] input){
+        List<Trajectory> out = new ArrayList<Trajectory>();
+        out.add(TrajectoryGenerator.generateTrajectory(List.of(
             new Pose2d(input[0].getX(),input[0].getY(),getAngle(input[1].minus(input[0]))),
             new Pose2d(input[1].getX(),input[1].getY(),getAngle(input[1].minus(input[0])))
-        ), config);
+        ), config));
         for(int i=1;i<input.length-1;i++) {
-            out = out.concatenate(TrajectoryGenerator.generateTrajectory(List.of(
+            out.add(TrajectoryGenerator.generateTrajectory(List.of(
                 new Pose2d(input[i].getX(),input[i].getY(),getAngle(input[i+1].minus(input[i]))),
                 new Pose2d(input[i+1].getX(),input[i+1].getY(),getAngle(input[i+1].minus(input[i])))
             ), config));

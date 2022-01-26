@@ -104,7 +104,7 @@ public class Drivetrain extends SubsystemBase {
     public static final double MP_Y_KI = 0;
     public static final double MP_Y_KD = 0;
 
-    public static final double MP_THETA_KP = 8;
+    public static final double MP_THETA_KP = 5;
     public static final double MP_THETA_KI = 0;
     public static final double MP_THETA_KD = 0;
 
