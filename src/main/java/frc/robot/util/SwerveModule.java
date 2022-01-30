@@ -47,8 +47,8 @@ public class SwerveModule {
 	private static final double DRIVE_KA = 0.13018;
 
 	private static final double MAX_CONTROL_EFFORT = 10; // volts 
-    private static final double MODEL_STANDARD_DEVIATION = 2;
-    private static final double ENCODER_STANDARD_DEVIATION = 0.08;
+    private static final double MODEL_STANDARD_DEVIATION = 0.4;
+    private static final double ENCODER_STANDARD_DEVIATION = 0.02;
 
 	private SimpleVelocitySystem loop;
 
@@ -220,6 +220,7 @@ public class SwerveModule {
 			loop.set(output);
 			loop.update(getCurrentVelocity());
             translation.set(TalonFXControlMode.PercentOutput, loop.getOutput());
+			// translation.set(TalonFXControlMode.PercentOutput, 0, DemandType.ArbitraryFeedForward, feedForward.calculate(output)/VOLTAGE_COMP);
         }
 	}
 	

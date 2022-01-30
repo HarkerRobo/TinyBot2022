@@ -104,12 +104,12 @@ public class Drivetrain extends SubsystemBase {
     public static final double MP_Y_KI = 0;
     public static final double MP_Y_KD = 0;
 
-    public static final double MP_THETA_KP = 5;
+    public static final double MP_THETA_KP = 7;
     public static final double MP_THETA_KI = 0;
     public static final double MP_THETA_KD = 0;
 
-    public static final double MP_MAX_DRIVE_VELOCITY = 2;
-    public static final double MP_MAX_DRIVE_ACCELERATION = 1;
+    public static final double MP_MAX_DRIVE_VELOCITY = 3;
+    public static final double MP_MAX_DRIVE_ACCELERATION = 2;
 
     public boolean fieldCentric=false;
 
@@ -166,8 +166,8 @@ public class Drivetrain extends SubsystemBase {
 
     public void setAngleAndDriveVelocity(SwerveModuleState[] states){
         topLeft.setSwerveManual(states[0]);
-        SmartDashboard.putNumber("TL VEL", states[0].speedMetersPerSecond);
-        SmartDashboard.putNumber("TL actual vel", topLeft.getCurrentVelocity());
+        SmartDashboard.putNumber("TL VEL", Math.abs(states[0].speedMetersPerSecond));
+        SmartDashboard.putNumber("TL actual vel", Math.abs(topLeft.getCurrentVelocity()));
         topRight.setSwerveManual(states[1]);
         bottomLeft.setSwerveManual(states[2]);
         bottomRight.setSwerveManual(states[3]);

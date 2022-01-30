@@ -18,12 +18,9 @@ public class SwerveManual extends IndefiniteCommand {
     private static final double kI=0.0;//00002;
     private static final double kD=0.0;//02;
     private static final double I_ZONE = 0;
-    private static final double angleKP=0.2;
+    private static final double angleKP=0.1;
     public static double pigeonAngle = Drivetrain.getInstance().getPigeon().getFusedHeading();
     private Debouncer debouncer = new Debouncer(0.3, DebounceType.kRising);
-
-    private double lastPigeonHeading = 0;
-
 
     private PIDController pid;
     public SwerveManual() {
@@ -73,8 +70,8 @@ public class SwerveManual extends IndefiniteCommand {
             
 
         if(OI.getInstance().getDriverGamepad().getButtonBState()){
-            translationx*=0.5;
-            translationy*=0.5;
+            translationx*=0.6;
+            translationy*=0.6;
             angularVelocity*=0.5;
         }
 
@@ -86,6 +83,5 @@ public class SwerveManual extends IndefiniteCommand {
         else
             chassis = ChassisSpeeds.fromFieldRelativeSpeeds(translationx, translationy, -angularVelocity, Rotation2d.fromDegrees(0));
         Drivetrain.getInstance().setAngleAndDriveVelocity(Drivetrain.getInstance().getKinematics().toSwerveModuleStates(chassis));
-        lastPigeonHeading = Drivetrain.getInstance().getPigeon().getFusedHeading(); 
     }
 }

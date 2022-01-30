@@ -9,9 +9,9 @@ package frc.robot;
 
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 // import frc.robot.commands.intake.IntakeControl;
@@ -28,13 +28,16 @@ import frc.robot.util.Limelight;
  * project.
  */
 public class Robot extends TimedRobot {
-
+  Field2d field;
+  static Timer timer = new Timer();
   /**
    * This function is run when the robot is first started up and should be
    * used for any initialization code.
    */
   @Override
   public void robotInit() {
+    field = new Field2d();
+    SmartDashboard.putData(field);
     Drivetrain drivetrain = Drivetrain.getInstance();
     drivetrain.getTopLeft().getRotationMotor().setSelectedSensorPosition((Drivetrain.getInstance().getTopLeft().getRotationMotor().getSensorCollection().getPulseWidthRiseToFallUs() - Drivetrain.TL_OFFSET));
     drivetrain.getTopRight().getRotationMotor().setSelectedSensorPosition((Drivetrain.getInstance().getTopRight().getRotationMotor().getSensorCollection().getPulseWidthRiseToFallUs() - Drivetrain.TR_OFFSET));
@@ -69,6 +72,8 @@ public class Robot extends TimedRobot {
       drivetrain.getBottomRight().getState()
     );
 
+    field.setRobotPose(drivetrain.getOdometry().getPoseMeters());
+
     
     
     SmartDashboard.putNumber("angle pos tl pulse width", drivetrain.getTopLeft().getRotationMotor().getSensorCollection().getPulseWidthRiseToFallUs());
@@ -88,6 +93,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("angle pos tr", drivetrain.getTopRight().getRotationMotor().getSelectedSensorPosition());
     SmartDashboard.putNumber("angle pos bl", drivetrain.getBottomLeft().getRotationMotor().getSelectedSensorPosition());
     SmartDashboard.putNumber("angle pos br", drivetrain.getBottomRight().getRotationMotor().getSelectedSensorPosition());
+
+    SmartDashboard.putNumber("Timer", timer.get());
 
 
     // SmartDashboard.putString("cd color spinner current color", Spinner.getInstance().getCurrentColor().toString());
