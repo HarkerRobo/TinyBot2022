@@ -18,7 +18,7 @@ public class SwerveManual extends IndefiniteCommand {
     private static final double kI=0.0;//00002;
     private static final double kD=0.0;//02;
     private static final double I_ZONE = 0;
-    private static final double angleKP=0.1;
+    private static final double angleKP = -0.1;
     public static double pigeonAngle = Drivetrain.getInstance().getPigeon().getFusedHeading();
     private Debouncer debouncer = new Debouncer(0.3, DebounceType.kRising);
 
@@ -40,10 +40,13 @@ public class SwerveManual extends IndefiniteCommand {
             translationx = 0;
             translationy = 0;
             if(Math.abs(angularVelocity)<(Drivetrain.MIN_OUTPUT)){
-                // pigeonAngle = Drivetrain.getInstance().getPigeon().getFusedHeading() + 0.1 ;
-                angularVelocity = 0.000001;
+                angularVelocity = 0;
             }
+            else
+                pigeonAngle = Drivetrain.getInstance().getPigeon().getFusedHeading();
         }
+        else
+            pigeonAngle = Drivetrain.getInstance().getPigeon().getFusedHeading();
         // if(OI.getInstance().getDriverGamepad().getButtonBState() || OI.getInstance().getOperatorGamepad().getButtonBState()){
         //     Shooter.getInstance().setAutoHoodAngle();
         // }
